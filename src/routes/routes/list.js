@@ -1,14 +1,42 @@
-import { getAllRoutes, getListOfRegions, getListOfSeasons } from '../../models/model.js';
+import { getAllRoutes, getListOfRegions, getListOfSeasons, getRoutesByRegion, getRoutesBySeason } from '../../models/model.js';
 
 export default async (req, res) => {
     const regions = await getListOfRegions();
     const routes = await getAllRoutes();
     const seasons = await getListOfSeasons();
 
+    const regionSort = req.query.region;
+    const seasonSort = req.query.season;
+
+    let filteredRoutes;
+
+    if (regionSort && seasonSort)
+    {
+        const regionFiltered = await getRoutesByRegion(regionSort);
+
+        // Couldn't use getRoutesBySeason(season) as that pulls from the db, not the called for list
+        filteredRoutes = regionFiltered.filter(route => 
+            route.bestSeason.toLowerCase() === seasonSort.toLowerCase()
+        );
+    }
+
+    else if (regionSort) {
+        filteredRoutes = await getRoutesByRegion(regionSort);
+    }
+    else if (seasonSort) {
+        filteredRoutes = await getRoutesBySeason(seasonSort);
+    }
+    else {
+        filteredRoutes = await getAllRoutes();
+    }
+    
     res.render('routes/list', { 
         title: 'Scenic Train Routes',
-        regions,
-        routes,
-        seasons
+        regions: regions,
+        routes: filteredRoutes,
+        seasons: seasons,
+        regionSort: regionSort,
+        seasonSort: seasonSort
     });
 };
+

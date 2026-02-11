@@ -21,7 +21,7 @@ export const getRouteById = async (routeId) => {
     return db().routes.find(route => route.id == routeId) || null;
 };
 
-export const getRoutesByRegion = async (region) => {
+export const getRoutesByRegion = async (region) => {    
     return db().routes.filter(route => route.region.toLowerCase() == region.toLowerCase());
 };
 
