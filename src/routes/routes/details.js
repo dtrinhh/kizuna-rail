@@ -7,6 +7,7 @@ export default async (req, res) => {
 
     // TODO: getCompleteRouteDetails instead
 
+
     res.render('routes/details', { 
         title: 'Route Details',
         details
