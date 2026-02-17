@@ -15,3 +15,21 @@
 @import 'components/columns-grid.css' layer(components);
 
 @import 'layout/all-layouts.css' layer(layout);
+
+@media print {
+    header, footer, .success-icon, .next-steps, .important-info, .confirmation-actions {
+        display: none;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .passengers-info {
+        break-inside: avoid;
+    }
+    .passengers-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
