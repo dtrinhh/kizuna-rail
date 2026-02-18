@@ -5,9 +5,11 @@ export default async (req, res) => {
     const routes = await getAllRoutes();
     const seasons = await getListOfSeasons();
 
+    // variables for matching query parameters chosen
     const regionSort = req.query.region;
     const seasonSort = req.query.season;
 
+    // variable since there is possible two sort functions to be applied
     let filteredRoutes;
 
     if (regionSort && seasonSort)
