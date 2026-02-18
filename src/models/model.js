@@ -1,4 +1,4 @@
-import { generateConfirmationCode, numToMonth } from '../includes/helpers.js';
+import { generateConfirmationCode, numToMonth, yenToUsd } from '../includes/helpers.js';
 import { getDb as db } from './db-in-file.js';
 
 // ROUTE MODEL FUNCTIONS
@@ -19,6 +19,7 @@ export const getListOfSeasons = async () => {
 
 export const getRouteById = async (routeId) => {
     const route = db().routes.find(route => route.id == routeId) || null;
+    // Added this portion to convert the numbers to display months abbreviations from fucntion in helpers.js
     return {
         ...route,
         operatingMonths: route.operatingMonths.map(month =>
@@ -175,7 +176,8 @@ export const getTicketOptionsForRoute = async (routeId) => {
     return db().ticketClasses.map(tc => ({
         class: tc.class,
         name: tc.name,
-        price: route.distance * tc.pricePerKm,
+        // Added yenToUsd function from helpers.js
+        price: yenToUsd((route.distance * tc.pricePerKm)),
         amenities: tc.amenities,
         description: tc.description
     }));
